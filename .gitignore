@@ -1,0 +1,22 @@
+/vendor/
+/node_modules/
+/public/storage
+/storage/*.key
+/.env
+/.env.*.php
+/.phpunit.result.cache
+
+# IDEs and editors
+*.sublime-project
+*.sublime-workspace
+*.idea/
+*.vscode/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sqlite
+*.sqlite3

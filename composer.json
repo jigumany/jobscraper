@@ -1,0 +1,26 @@
+{
+    "name": "mwds/jobscraper",
+    "description": "A laravel package to scrape for teaching jobs",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mwds\\Jobscraper\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mwds\\Jobscraper\\JobScraperServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "George Manyara",
+            "email": "george@mwds.co.za"
+        }
+    ],
+    "minimum-stability": "dev"
+
+}
