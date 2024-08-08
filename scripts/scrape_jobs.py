@@ -93,17 +93,40 @@ def scrape_indeed_jobs(url):
 
     return jobs_data.to_dict(orient='records')
 
+def send_jobs_to_laravel(jobs, api_url):
+    if not api_url:
+        print('Error: Laravel API URL is not set. Please update the config.json file with the correct API URL.')
+        return
+
+    headers = {'Content-Type': 'application/json'}
+    try:
+        response = requests.post(api_url, headers=headers, data=json.dumps(jobs))
+        if response.status_code == 200:
+            print('Jobs successfully sent to Laravel app.')
+        else:
+            print(f'Failed to send jobs: {response.text}')
+    except requests.RequestException as e:
+        print(f'An error occurred while sending jobs: {e}')
+
 if __name__ == '__main__':
     config = load_config()
-    tes_jobs = scrape_tes_jobs(config['tes_url'])
-    indeed_jobs = scrape_indeed_jobs(config['indeed_url'])
 
-    all_jobs = {
-        'tes_jobs': tes_jobs,
-        'indeed_jobs': indeed_jobs,
-    }
+    tes_url = config.get('tes_url')
+    indeed_url = config.get('indeed_url')
+    api_url = config.get('laravel_api_url')  # Fetch the API URL from config
 
-    with open('jobs.json', 'w') as file:
-        json.dump(all_jobs, file, indent=4)
+    if not tes_url or not indeed_url:
+        print('Error: TES URL or Indeed URL is missing in the config file.')
+        print('Please update config.json with the correct URLs.')
+    else:
+        tes_jobs = scrape_tes_jobs(tes_url)
+        indeed_jobs = scrape_indeed_jobs(indeed_url)
 
-    print("Job posts scraped and saved to jobs.json")
+        all_jobs = {
+            'tes_jobs': tes_jobs,
+            'indeed_jobs': indeed_jobs,
+        }
+
+        send_jobs_to_laravel(all_jobs, api_url)
+
+        print("Job posts scraped and sent to Laravel app.")
